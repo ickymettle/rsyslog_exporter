@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -62,4 +63,8 @@ func (p *point) promType() prometheus.ValueType {
 
 func (p *point) promValue() float64 {
 	return float64(p.Value)
+}
+
+func (p *point) key() string {
+	return p.Name + ":" + strings.Join(p.LabelValues, ",")
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 )
 
 type resource struct {
@@ -30,63 +29,63 @@ func (r *resource) toPoints() []*point {
 	points := make([]*point, 9)
 
 	points[0] = &point{
-		Name:        fmt.Sprintf("%s_utime", r.Name),
+		Name:        "resource_usage_utime_microseconds_total",
 		Type:        counter,
 		Value:       r.Utime,
 		Description: "user time used in microseconds",
 	}
 
 	points[1] = &point{
-		Name:        fmt.Sprintf("%s_stime", r.Name),
+		Name:        "resource_usage_stime_microseconds_total",
 		Type:        counter,
 		Value:       r.Stime,
 		Description: "system time used in microsends",
 	}
 
 	points[2] = &point{
-		Name:        fmt.Sprintf("%s_maxrss", r.Name),
+		Name:        "resource_usage_maxrss_bytes",
 		Type:        gauge,
 		Value:       r.Maxrss,
 		Description: "maximum resident set size",
 	}
 
 	points[3] = &point{
-		Name:        fmt.Sprintf("%s_minflt", r.Name),
+		Name:        "resource_usage_minflt_total",
 		Type:        counter,
 		Value:       r.Minflt,
 		Description: "total minor faults",
 	}
 
 	points[4] = &point{
-		Name:        fmt.Sprintf("%s_majflt", r.Name),
+		Name:        "resource_usage_majflt_total",
 		Type:        counter,
 		Value:       r.Majflt,
 		Description: "total major faults",
 	}
 
 	points[5] = &point{
-		Name:        fmt.Sprintf("%s_inblock", r.Name),
+		Name:        "resource_usage_inblock_total",
 		Type:        counter,
 		Value:       r.Inblock,
 		Description: "filesystem input operations",
 	}
 
 	points[6] = &point{
-		Name:        fmt.Sprintf("%s_oublock", r.Name),
+		Name:        "resource_usage_oublock_total",
 		Type:        counter,
 		Value:       r.Outblock,
 		Description: "filesystem output operations",
 	}
 
 	points[7] = &point{
-		Name:        fmt.Sprintf("%s_nvcsw", r.Name),
+		Name:        "resource_usage_nvcsw_total",
 		Type:        counter,
 		Value:       r.Nvcsw,
 		Description: "voluntary context switches",
 	}
 
 	points[8] = &point{
-		Name:        fmt.Sprintf("%s_nivcsw", r.Name),
+		Name:        "resource_usage_nivcsw_total",
 		Type:        counter,
 		Value:       r.Nivcsw,
 		Description: "involuntary context switches",

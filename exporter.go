@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"bytes"
-	"fmt"
 	"os"
 	"strings"
 	"sync"
@@ -42,7 +41,6 @@ func newRsyslogExporter() *rsyslogExporter {
 func (re *rsyslogExporter) handleStatLine(buf []byte) {
 	buf = bytes.TrimPrefix(buf, []byte("@cee: "))
 	pstatType := getStatType(buf)
-	fmt.Printf("%s", string(buf))
 
 	switch pstatType {
 	case rsyslogAction:

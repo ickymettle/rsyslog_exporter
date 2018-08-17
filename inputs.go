@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 )
 
 type input struct {
@@ -22,9 +21,11 @@ func (i *input) toPoints() []*point {
 	points := make([]*point, 1)
 
 	points[0] = &point{
-		Name:        fmt.Sprintf("%s_submitted", i.Name),
+		Name:        "input_messages_submitted_total",
 		Type:        counter,
 		Value:       i.Submitted,
+		LabelNames:  []string{"name"},
+		LabelValues: []string{i.Name},
 		Description: "messages submitted",
 	}
 
