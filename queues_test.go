@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 var (
 	queueLog = []byte(`{"name":"main Q","size":10,"enqueued":20,"full":30,"discarded.full":40,"discarded.nf":50,"maxqsize":60}`)
@@ -48,7 +51,7 @@ func TestQueueToPoints(t *testing.T) {
 	points := pstat.toPoints()
 
 	point := points[0]
-	if want, got := "main_q_size", point.Name; want != got {
+	if want, got := "size", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -59,7 +62,7 @@ func TestQueueToPoints(t *testing.T) {
 	}
 
 	point = points[1]
-	if want, got := "main_q_enqueued", point.Name; want != got {
+	if want, got := "enqueued_total", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -71,8 +74,16 @@ func TestQueueToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
+	if want, got := []string{"name"}, point.LabelNames; !reflect.DeepEqual(want, got) {
+		t.Errorf("wanted '%v', got '%v'", want, got)
+	}
+
+	if want, got := []string{"main_q"}, point.LabelValues; !reflect.DeepEqual(want, got) {
+		t.Errorf("wanted '%v', got '%v'", want, got)
+	}
+
 	point = points[2]
-	if want, got := "main_q_full", point.Name; want != got {
+	if want, got := "full_total", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -84,8 +95,16 @@ func TestQueueToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
+	if want, got := []string{"name"}, point.LabelNames; !reflect.DeepEqual(want, got) {
+		t.Errorf("wanted '%v', got '%v'", want, got)
+	}
+
+	if want, got := []string{"main_q"}, point.LabelValues; !reflect.DeepEqual(want, got) {
+		t.Errorf("wanted '%v', got '%v'", want, got)
+	}
+
 	point = points[3]
-	if want, got := "main_q_discarded_full", point.Name; want != got {
+	if want, got := "discarded_full_total", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -97,8 +116,16 @@ func TestQueueToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
+	if want, got := []string{"name"}, point.LabelNames; !reflect.DeepEqual(want, got) {
+		t.Errorf("wanted '%v', got '%v'", want, got)
+	}
+
+	if want, got := []string{"main_q"}, point.LabelValues; !reflect.DeepEqual(want, got) {
+		t.Errorf("wanted '%v', got '%v'", want, got)
+	}
+
 	point = points[4]
-	if want, got := "main_q_discarded_not_full", point.Name; want != got {
+	if want, got := "discarded_not_full_total", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -110,8 +137,16 @@ func TestQueueToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
+	if want, got := []string{"name"}, point.LabelNames; !reflect.DeepEqual(want, got) {
+		t.Errorf("wanted '%v', got '%v'", want, got)
+	}
+
+	if want, got := []string{"main_q"}, point.LabelValues; !reflect.DeepEqual(want, got) {
+		t.Errorf("wanted '%v', got '%v'", want, got)
+	}
+
 	point = points[5]
-	if want, got := "main_q_max_queue_size", point.Name; want != got {
+	if want, got := "max_queue_size", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -121,6 +156,14 @@ func TestQueueToPoints(t *testing.T) {
 
 	if want, got := gauge, point.Type; want != got {
 		t.Errorf("want '%d', got '%d'", want, got)
+	}
+
+	if want, got := []string{"name"}, point.LabelNames; !reflect.DeepEqual(want, got) {
+		t.Errorf("wanted '%v', got '%v'", want, got)
+	}
+
+	if want, got := []string{"main_q"}, point.LabelValues; !reflect.DeepEqual(want, got) {
+		t.Errorf("wanted '%v', got '%v'", want, got)
 	}
 
 }

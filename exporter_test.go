@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func testHelper(t *testing.T, line []byte, testCase []*testUnit) {
 	exporter := newRsyslogExporter()
@@ -18,6 +21,14 @@ func testHelper(t *testing.T, line []byte, testCase []*testUnit) {
 
 		if want, got := item.Val, p.promValue(); want != got {
 			t.Errorf("%s: want '%f', got '%f'", item.Name, want, got)
+		}
+
+		if want, got := item.LabelNames, p.LabelNames; !reflect.DeepEqual(want, got) {
+			t.Errorf("%s: want '%v', got '%v'", item.Name, want, got)
+		}
+
+		if want, got := item.LabelValues, p.LabelValues; !reflect.DeepEqual(want, got) {
+			t.Errorf("%s: want '%v', got '%v'", item.Name, want, got)
 		}
 	}
 
@@ -47,31 +58,43 @@ func testHelper(t *testing.T, line []byte, testCase []*testUnit) {
 }
 
 type testUnit struct {
-	Name string
-	Val  float64
+	Name        string
+	Val         float64
+	LabelNames  []string
+	LabelValues []string
 }
 
 func TestHandleLineWithAction(t *testing.T) {
 	tests := []*testUnit{
 		&testUnit{
-			Name: "test_action_processed",
-			Val:  100000,
+			Name:        "processed_total",
+			Val:         100000,
+			LabelNames:  []string{"name"},
+			LabelValues: []string{"test_action"},
 		},
 		&testUnit{
-			Name: "test_action_failed",
-			Val:  2,
+			Name:        "failed_total",
+			Val:         2,
+			LabelNames:  []string{"name"},
+			LabelValues: []string{"test_action"},
 		},
 		&testUnit{
-			Name: "test_action_suspended",
-			Val:  1,
+			Name:        "suspended_total",
+			Val:         1,
+			LabelNames:  []string{"name"},
+			LabelValues: []string{"test_action"},
 		},
 		&testUnit{
-			Name: "test_action_suspended_duration",
-			Val:  1000,
+			Name:        "suspended_duration_seconds",
+			Val:         1000,
+			LabelNames:  []string{"name"},
+			LabelValues: []string{"test_action"},
 		},
 		&testUnit{
-			Name: "test_action_resumed",
-			Val:  1,
+			Name:        "resumed_total",
+			Val:         1,
+			LabelNames:  []string{"name"},
+			LabelValues: []string{"test_action"},
 		},
 	}
 
@@ -138,28 +161,40 @@ func TestHandleLineWithInput(t *testing.T) {
 func TestHandleLineWithQueue(t *testing.T) {
 	tests := []*testUnit{
 		&testUnit{
-			Name: "main_q_size",
-			Val:  10,
+			Name:        "size",
+			Val:         10,
+			LabelNames:  []string{"name"},
+			LabelValues: []string{"main_q"},
 		},
 		&testUnit{
-			Name: "main_q_enqueued",
-			Val:  20,
+			Name:        "enqueued_total",
+			Val:         20,
+			LabelNames:  []string{"name"},
+			LabelValues: []string{"main_q"},
 		},
 		&testUnit{
-			Name: "main_q_full",
-			Val:  30,
+			Name:        "full_total",
+			Val:         30,
+			LabelNames:  []string{"name"},
+			LabelValues: []string{"main_q"},
 		},
 		&testUnit{
-			Name: "main_q_discarded_full",
-			Val:  40,
+			Name:        "discarded_full_total",
+			Val:         40,
+			LabelNames:  []string{"name"},
+			LabelValues: []string{"main_q"},
 		},
 		&testUnit{
-			Name: "main_q_discarded_not_full",
-			Val:  50,
+			Name:        "discarded_not_full_total",
+			Val:         50,
+			LabelNames:  []string{"name"},
+			LabelValues: []string{"main_q"},
 		},
 		&testUnit{
-			Name: "main_q_max_queue_size",
-			Val:  60,
+			Name:        "max_queue_size",
+			Val:         60,
+			LabelNames:  []string{"name"},
+			LabelValues: []string{"main_q"},
 		},
 	}
 

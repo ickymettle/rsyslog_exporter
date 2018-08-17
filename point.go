@@ -23,6 +23,8 @@ type point struct {
 	Description string
 	Type        pointType
 	Value       int64
+	LabelNames  []string
+	LabelValues []string
 }
 
 func (p *point) add(newPoint *point) error {
@@ -47,7 +49,7 @@ func (p *point) promDescription() *prometheus.Desc {
 	return prometheus.NewDesc(
 		prometheus.BuildFQName("", "rsyslog", p.Name),
 		p.Description,
-		nil, nil,
+		p.LabelNames, nil,
 	)
 }
 

@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 var (
 	actionLog = []byte(`{"name":"test_action","processed":100000,"failed":2,"suspended":1,"suspended.duration":1000,"resumed":1}`)
@@ -44,7 +47,7 @@ func TestActionToPoints(t *testing.T) {
 	points := pstat.toPoints()
 
 	point := points[0]
-	if want, got := "test_action_processed", point.Name; want != got {
+	if want, got := "processed_total", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -56,8 +59,16 @@ func TestActionToPoints(t *testing.T) {
 		t.Errorf("wanted '%d', got '%d'", want, got)
 	}
 
+	if want, got := []string{"name"}, point.LabelNames; !reflect.DeepEqual(want, got) {
+		t.Errorf("wanted '%v', got '%v'", want, got)
+	}
+
+	if want, got := []string{"test_action"}, point.LabelValues; !reflect.DeepEqual(want, got) {
+		t.Errorf("wanted '%v', got '%v'", want, got)
+	}
+
 	point = points[1]
-	if want, got := "test_action_failed", point.Name; want != got {
+	if want, got := "failed_total", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -70,7 +81,7 @@ func TestActionToPoints(t *testing.T) {
 	}
 
 	point = points[2]
-	if want, got := "test_action_suspended", point.Name; want != got {
+	if want, got := "suspended_total", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -83,7 +94,7 @@ func TestActionToPoints(t *testing.T) {
 	}
 
 	point = points[3]
-	if want, got := "test_action_suspended_duration", point.Name; want != got {
+	if want, got := "suspended_duration_seconds", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -96,7 +107,7 @@ func TestActionToPoints(t *testing.T) {
 	}
 
 	point = points[4]
-	if want, got := "test_action_resumed", point.Name; want != got {
+	if want, got := "resumed_total", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 

@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"strings"
 )
 
@@ -29,38 +28,48 @@ func (a *action) toPoints() []*point {
 	points := make([]*point, 5)
 
 	points[0] = &point{
-		Name:        fmt.Sprintf("%s_processed", a.Name),
+		Name:        "processed_total",
 		Type:        counter,
 		Value:       a.Processed,
 		Description: "messages processed",
+		LabelNames:  []string{"name"},
+		LabelValues: []string{a.Name},
 	}
 
 	points[1] = &point{
-		Name:        fmt.Sprintf("%s_failed", a.Name),
+		Name:        "failed_total",
 		Type:        counter,
 		Value:       a.Failed,
 		Description: "messages failed",
+		LabelNames:  []string{"name"},
+		LabelValues: []string{a.Name},
 	}
 
 	points[2] = &point{
-		Name:        fmt.Sprintf("%s_suspended", a.Name),
+		Name:        "suspended_total",
 		Type:        counter,
 		Value:       a.Suspended,
 		Description: "times suspended",
+		LabelNames:  []string{"name"},
+		LabelValues: []string{a.Name},
 	}
 
 	points[3] = &point{
-		Name:        fmt.Sprintf("%s_suspended_duration", a.Name),
+		Name:        "suspended_duration_seconds",
 		Type:        counter,
 		Value:       a.SuspendedDuration,
 		Description: "time spent suspended",
+		LabelNames:  []string{"name"},
+		LabelValues: []string{a.Name},
 	}
 
 	points[4] = &point{
-		Name:        fmt.Sprintf("%s_resumed", a.Name),
+		Name:        "resumed_total",
 		Type:        counter,
 		Value:       a.Resumed,
 		Description: "times resumed",
+		LabelNames:  []string{"name"},
+		LabelValues: []string{a.Name},
 	}
 
 	return points
