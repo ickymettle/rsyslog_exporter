@@ -28,24 +28,6 @@ type point struct {
 	LabelValues []string
 }
 
-func (p *point) add(newPoint *point) error {
-	switch newPoint.Type {
-	case gauge:
-		if p.Type != gauge {
-			return ErrIncompatiblePointType
-		}
-		p.Value = newPoint.Value
-	case counter:
-		if p.Type != counter {
-			return ErrIncompatiblePointType
-		}
-		p.Value = p.Value + newPoint.Value
-	default:
-		return ErrUnknownPointType
-	}
-	return nil
-}
-
 func (p *point) promDescription() *prometheus.Desc {
 	return prometheus.NewDesc(
 		prometheus.BuildFQName("", "rsyslog", p.Name),
