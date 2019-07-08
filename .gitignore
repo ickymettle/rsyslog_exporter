@@ -22,3 +22,7 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+.build
+dependencies-stamp
+rsyslog_exporter
